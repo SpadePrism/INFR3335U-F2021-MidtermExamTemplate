@@ -8,6 +8,7 @@ public class Move : MonoBehaviour
     private float speed;
     private float dirX;
     private float dirZ;
+    private int count = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -28,5 +29,20 @@ public class Move : MonoBehaviour
     private void FixedUpdate()
     {
         rb.velocity = new Vector3(dirX, rb.velocity.y, dirZ);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Coin coin = collision.gameObject.GetComponent<Coin>();
+        if(coin)
+        {
+            Destroy(collision.gameObject);
+            count += 1;
+            if(count >= 10)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("End");
+                count = 0;
+            }
+        }
     }
 }
